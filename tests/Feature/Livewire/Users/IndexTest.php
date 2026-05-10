@@ -44,6 +44,9 @@ it('verifies component headers', function () {
         ['index' => 'name', 'label' => 'Name'],
         ['index' => 'email', 'label' => 'E-mail'],
         ['index' => 'role', 'label' => 'Role'],
+        ['index' => 'access', 'label' => 'Access'],
+        ['index' => 'permissions', 'label' => 'Permissions'],
+        ['index' => 'status', 'label' => 'Status'],
         ['index' => 'created_at', 'label' => 'Created'],
         ['index' => 'action', 'sortable' => false],
     ];
@@ -51,14 +54,14 @@ it('verifies component headers', function () {
     $component->assertSet('headers', $headers);
 });
 
-it('fetches paginated users excluding authenticated user', function () {
+it('fetches paginated household users including the owner row', function () {
     $rows = Livewire::test(Index::class)->get('rows');
 
     expect($rows)
         ->toBeInstanceOf(LengthAwarePaginator::class)
         ->and($rows->total())
-        ->toBe(15)
-        ->and($rows->pluck('id'))->not()->toContain($this->auth->id);
+        ->toBe(16)
+        ->and($rows->pluck('id'))->toContain($this->auth->id);
 
 });
 
@@ -103,7 +106,7 @@ it('supports changing pagination quantity', function () {
     expect($rows->perPage())
         ->toBe(5)
         ->and($rows->total())
-        ->toBe(15);
+        ->toBe(16);
 });
 
 it('supports sorting by different columns', function () {

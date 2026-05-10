@@ -31,6 +31,9 @@ class Index extends Component
         ['index' => 'name', 'label' => 'Name'],
         ['index' => 'email', 'label' => 'E-mail'],
         ['index' => 'role', 'label' => 'Role'],
+        ['index' => 'access', 'label' => 'Access'],
+        ['index' => 'permissions', 'label' => 'Permissions'],
+        ['index' => 'status', 'label' => 'Status'],
         ['index' => 'created_at', 'label' => 'Created'],
         ['index' => 'action', 'sortable' => false],
     ];
@@ -49,8 +52,8 @@ class Index extends Component
     public function rows(): LengthAwarePaginator
     {
         return User::query()
+            ->with(['studentProfile', 'studentAccessGrants.student'])
             ->where('household_id', Auth::user()->household_id)
-            ->whereNotIn('id', [Auth::id()])
             ->when($this->search !== null, fn (Builder $query) => $query->whereAny(['name', 'email'], 'like', '%'.trim($this->search).'%'))
             ->orderBy(...array_values($this->sort))
             ->paginate($this->quantity)

@@ -35,6 +35,78 @@ enum Permission: string
     case ViewEvaluatorPacket = 'view_evaluator_packet';
     case ViewAuditLog = 'view_audit_log';
 
+    public function label(): string
+    {
+        return match ($this) {
+            self::ManageHousehold => 'Manage household',
+            self::ManageUsers => 'Manage users',
+            self::ManagePermissions => 'Manage permissions',
+            self::ManageStudents => 'Manage students',
+            self::ViewStudents => 'View students',
+            self::SwitchStudents => 'Switch students',
+            self::ManageEvaluatorGrants => 'Manage evaluator grants',
+
+            self::ViewCourses => 'View courses',
+            self::ManageCourses => 'Manage courses',
+            self::ViewSyllabus => 'View syllabus',
+            self::ManageSyllabus => 'Manage syllabus',
+            self::ViewResources => 'View resources',
+            self::ManageResources => 'Manage resources',
+
+            self::ViewAssignments => 'View assignments',
+            self::ManageAssignments => 'Manage assignments',
+            self::MoveAssignments => 'Move assignments',
+            self::SubmitEvidence => 'Submit evidence',
+            self::SubmitReflections => 'Submit reflections',
+
+            self::ViewGrades => 'View grades',
+            self::ManageGrades => 'Manage grades',
+            self::ViewReadingLogs => 'View reading logs',
+            self::ManageReadingLogs => 'Manage reading logs',
+            self::ViewCourseLogs => 'View course logs',
+            self::ManageCourseLogs => 'Manage course logs',
+
+            self::ViewEvaluatorPacket => 'View evaluator packet',
+            self::ViewAuditLog => 'View audit log',
+        };
+    }
+
+    public function group(): string
+    {
+        return match ($this) {
+            self::ManageHousehold,
+            self::ManageUsers,
+            self::ManagePermissions,
+            self::ManageStudents,
+            self::ViewStudents,
+            self::SwitchStudents,
+            self::ManageEvaluatorGrants => 'Family access',
+
+            self::ViewCourses,
+            self::ManageCourses,
+            self::ViewSyllabus,
+            self::ManageSyllabus,
+            self::ViewResources,
+            self::ManageResources => 'Courses & syllabus',
+
+            self::ViewAssignments,
+            self::ManageAssignments,
+            self::MoveAssignments,
+            self::SubmitEvidence,
+            self::SubmitReflections => 'Assignments',
+
+            self::ViewGrades,
+            self::ManageGrades,
+            self::ViewReadingLogs,
+            self::ManageReadingLogs,
+            self::ViewCourseLogs,
+            self::ManageCourseLogs => 'Records',
+
+            self::ViewEvaluatorPacket,
+            self::ViewAuditLog => 'Audit & portfolio',
+        };
+    }
+
     /**
      * @return array<int, string>
      */

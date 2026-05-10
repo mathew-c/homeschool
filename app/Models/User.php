@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string $password
  * @property Carbon $email_verified_at
  * @property string $remember_token
+ * @property Carbon|null $disabled_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -33,6 +34,7 @@ class User extends Authenticatable
         'email',
         'role',
         'permissions',
+        'disabled_at',
         'password',
     ];
 
@@ -47,8 +49,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'role' => UserRole::class,
             'permissions' => 'array',
+            'disabled_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function scopeEnabled(Builder $query): Builder
+    {
+        return $query->whereNull('disabled_at');
     }
 
     public function household(): BelongsTo
@@ -69,6 +77,11 @@ class User extends Authenticatable
     public function studentAccessGrants(): HasMany
     {
         return $this->hasMany(StudentAccessGrant::class)->active();
+    }
+
+    public function allStudentAccessGrants(): HasMany
+    {
+        return $this->hasMany(StudentAccessGrant::class);
     }
 
     public function activityEvents(): HasMany
@@ -113,6 +126,21 @@ class User extends Authenticatable
         $permission = $permission instanceof Permission ? $permission->value : $permission;
 
         return in_array($permission, $this->permissionValues(), true);
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled_at !== null;
+    }
+
+    public function disable(): bool
+    {
+        return $this->forceFill(['disabled_at' => now()])->save();
+    }
+
+    public function enable(): bool
+    {
+        return $this->forceFill(['disabled_at' => null])->save();
     }
 
     public function visibleStudentsQuery(): Builder

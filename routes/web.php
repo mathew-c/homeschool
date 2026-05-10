@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard')->name('welcome');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'enabled'])->group(function () {
     Route::get('/dashboard', HomeschoolBoard::class)->name('dashboard');
     Route::get('/students', StudentIndex::class)
         ->middleware('can:create,'.Student::class)

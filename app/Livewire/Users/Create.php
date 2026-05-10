@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Users;
 
+use App\Enums\Permission;
 use App\Enums\UserRole;
 use App\Livewire\Traits\Alert;
+use App\Livewire\Users\Concerns\ManagesUserAccess;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -16,10 +18,15 @@ class Create extends Component
 {
     use AuthorizesRequests;
     use Alert;
+    use ManagesUserAccess;
 
     public User $user;
 
     public string $role = 'parent';
+
+    public ?int $studentId = null;
+
+    public array $permissions = [];
 
     public ?string $password = null;
 
@@ -33,6 +40,7 @@ class Create extends Component
 
         $this->user = new User();
         $this->role = UserRole::Parent->value;
+        $this->resetPermissionsToRoleDefaults();
     }
 
     public function render(): View
@@ -59,6 +67,17 @@ class Create extends Component
                 'required',
                 Rule::in($this->allowedRoleValues()),
             ],
+            'studentId' => [
+                Rule::requiredIf($this->studentScopeIsRequired()),
+                'nullable',
+                Rule::exists('students', 'id')->where('household_id', Auth::user()->household_id),
+            ],
+            'permissions' => [
+                'array',
+            ],
+            'permissions.*' => [
+                Rule::in(Permission::values()),
+            ],
             'password' => [
                 'required',
                 'string',
@@ -71,12 +90,25 @@ class Create extends Component
     #[Computed]
     public function roleOptions(): array
     {
-        return collect($this->allowedRoles())
-            ->map(fn (UserRole $role): array => [
-                'value' => $role->value,
-                'label' => $role->label(),
-            ])
-            ->all();
+        return $this->roleOptionsForForm();
+    }
+
+    #[Computed]
+    public function studentOptions(): array
+    {
+        return $this->studentOptionsForForm();
+    }
+
+    #[Computed]
+    public function permissionGroups(): array
+    {
+        return $this->permissionGroupsForForm();
+    }
+
+    public function updatedRole(): void
+    {
+        $this->studentId = null;
+        $this->resetPermissionsToRoleDefaults();
     }
 
     public function save(): void
@@ -87,32 +119,20 @@ class Create extends Component
 
         $this->user->household_id = Auth::user()->household_id;
         $this->user->role = $this->role;
-        $this->user->permissions = null;
+        $this->user->permissions = $this->permissionOverridesFor($this->role, $this->permissions);
         $this->user->password = bcrypt($this->password);
         $this->user->email_verified_at = now();
         $this->user->save();
+
+        $this->syncStudentAccess($this->user, $this->studentId);
 
         $this->dispatch('created');
 
         $this->reset();
         $this->user = new User();
         $this->role = UserRole::Parent->value;
+        $this->resetPermissionsToRoleDefaults();
 
         $this->success();
-    }
-
-    private function allowedRoles(): array
-    {
-        return collect(UserRole::cases())
-            ->reject(fn (UserRole $role): bool => $role === UserRole::Owner && ! Auth::user()->hasRole(UserRole::Owner))
-            ->values()
-            ->all();
-    }
-
-    private function allowedRoleValues(): array
-    {
-        return collect($this->allowedRoles())
-            ->map(fn (UserRole $role): string => $role->value)
-            ->all();
     }
 }

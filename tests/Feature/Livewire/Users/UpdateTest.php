@@ -1,14 +1,22 @@
 <?php
 
 use App\Livewire\Users\Update;
+use App\Enums\Permission;
 use App\Enums\UserRole;
+use App\Models\Student;
+use App\Models\StudentAccessGrant;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     $this->auth = User::factory()->owner()->create();
+    $this->student = Student::factory()->ownedBy($this->auth)->create([
+        'name' => 'Tor',
+        'level' => '9th grade',
+    ]);
 
     actingAs($this->auth);
 
@@ -29,6 +37,7 @@ it('initializes with existing user data', function () {
         ->assertSet('user.name', 'Original Name')
         ->assertSet('user.email', 'original@example.com')
         ->assertSet('role', UserRole::Parent->value)
+        ->assertSet('studentId', null)
         ->assertSet('password', null)
         ->assertSet('password_confirmation', null);
 });
@@ -39,6 +48,7 @@ it('load the correct use', function () {
         ->assertSet('user.name', 'Original Name')
         ->assertSet('user.email', 'original@example.com')
         ->assertSet('role', UserRole::Parent->value)
+        ->assertSet('studentId', null)
         ->assertSet('password', null)
         ->assertSet('password_confirmation', null);
 });
@@ -48,6 +58,7 @@ it('updates user name and email', function () {
         ->set('user.name', 'Updated Name')
         ->set('user.email', 'updated@example.com')
         ->set('role', UserRole::Evaluator->value)
+        ->set('studentId', $this->student->id)
         ->call('save')
         ->assertHasNoErrors();
 
@@ -59,6 +70,19 @@ it('updates user name and email', function () {
         ->toBe('updated@example.com')
         ->and($updated->role)
         ->toBe(UserRole::Evaluator);
+
+    expect(StudentAccessGrant::query()
+        ->where('user_id', $updated->id)
+        ->where('student_id', $this->student->id)
+        ->whereNull('revoked_at')
+        ->exists())->toBeTrue();
+});
+
+it('requires a scoped student when changing to evaluator', function () {
+    Livewire::test(Update::class, ['user' => $this->original])
+        ->set('role', UserRole::Evaluator->value)
+        ->call('save')
+        ->assertHasErrors(['studentId' => 'required']);
 });
 
 it('requires name', function () {
@@ -92,6 +116,39 @@ it('updates password when provided', function () {
     $updated = User::find($this->original->id);
 
     expect($updated->password)->not()->toBe($old);
+});
+
+it('generates a temporary password for a user', function () {
+    $old = $this->original->password;
+
+    $component = Livewire::test(Update::class, ['user' => $this->original])
+        ->call('resetPassword')
+        ->assertHasNoErrors()
+        ->assertSet('password', null)
+        ->assertSet('password_confirmation', null)
+        ->assertDispatched('updated');
+
+    $temporaryPassword = $component->get('temporaryPassword');
+    $updated = $this->original->fresh();
+
+    expect($temporaryPassword)->toBeString()
+        ->and($updated->password)->not()->toBe($old)
+        ->and(Hash::check($temporaryPassword, $updated->password))->toBeTrue();
+});
+
+it('stores permission removals as explicit overrides', function () {
+    $selected = array_values(array_diff($this->original->permissionValues(), [Permission::MoveAssignments->value]));
+
+    Livewire::test(Update::class, ['user' => $this->original])
+        ->set('permissions', $selected)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    $updated = $this->original->fresh();
+
+    expect($updated->permissions)->toHaveKey(Permission::MoveAssignments->value)
+        ->and($updated->permissions[Permission::MoveAssignments->value])->toBeFalse()
+        ->and($updated->hasPermission(Permission::MoveAssignments))->toBeFalse();
 });
 
 it('does not update password when not provided', function () {

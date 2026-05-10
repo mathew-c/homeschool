@@ -20,6 +20,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'role' => UserRole::Parent->value,
             'permissions' => null,
+            'disabled_at' => null,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -64,6 +65,13 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => $role instanceof UserRole ? $role->value : $role,
+        ]);
+    }
+
+    public function disabled(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'disabled_at' => now(),
         ]);
     }
 }

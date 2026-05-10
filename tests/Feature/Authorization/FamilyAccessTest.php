@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\AssignmentShow;
 use App\Livewire\CourseHub;
 use App\Livewire\CourseIndex;
 use App\Livewire\HomeschoolBoard;
@@ -88,4 +89,86 @@ it('lets evaluators view one student without editing the syllabus', function () 
         'course_id' => $course->id,
         'title' => 'Evaluator-added week',
     ]);
+});
+
+it('does not let evaluators access another student in the household', function () {
+    $evaluator = User::factory()->evaluator()->inHousehold($this->owner->household)->create();
+
+    StudentAccessGrant::create([
+        'household_id' => $this->owner->household_id,
+        'student_id' => $this->tor->id,
+        'user_id' => $evaluator->id,
+        'created_by_user_id' => $this->owner->id,
+    ]);
+
+    $matyCourse = $this->maty->courses()->firstOrFail();
+
+    actingAs($evaluator);
+
+    Livewire::test(CourseHub::class, ['course' => $matyCourse])
+        ->assertForbidden();
+});
+
+it('keeps evaluator assignment access read-only', function () {
+    $evaluator = User::factory()->evaluator()->inHousehold($this->owner->household)->create();
+
+    StudentAccessGrant::create([
+        'household_id' => $this->owner->household_id,
+        'student_id' => $this->tor->id,
+        'user_id' => $evaluator->id,
+        'created_by_user_id' => $this->owner->id,
+    ]);
+
+    $assignment = $this->tor->assignments()->where('status', 'assigned')->firstOrFail();
+
+    actingAs($evaluator);
+
+    Livewire::test(AssignmentShow::class, ['assignment' => $assignment])
+        ->assertOk()
+        ->assertSet('canEditAssignment', false)
+        ->assertSet('canMoveAssignment', false)
+        ->assertSet('canSubmitEvidence', false)
+        ->assertSet('canSubmitReflection', false)
+        ->set('evidence', 'Evaluator should not write evidence.')
+        ->call('save')
+        ->assertForbidden();
+
+    Livewire::test(AssignmentShow::class, ['assignment' => $assignment])
+        ->call('markDone')
+        ->assertForbidden();
+});
+
+it('keeps evaluator course records read-only', function () {
+    $evaluator = User::factory()->evaluator()->inHousehold($this->owner->household)->create();
+
+    StudentAccessGrant::create([
+        'household_id' => $this->owner->household_id,
+        'student_id' => $this->tor->id,
+        'user_id' => $evaluator->id,
+        'created_by_user_id' => $this->owner->id,
+    ]);
+
+    $course = $this->tor->courses()->where('title', 'World History')->firstOrFail();
+
+    actingAs($evaluator);
+
+    Livewire::test(CourseHub::class, ['course' => $course])
+        ->set('newResourceTitle', 'Evaluator Resource')
+        ->call('addResource')
+        ->assertForbidden();
+
+    Livewire::test(CourseHub::class, ['course' => $course])
+        ->set('newReadingTitle', 'Evaluator Reading')
+        ->call('addReading')
+        ->assertForbidden();
+
+    Livewire::test(CourseHub::class, ['course' => $course])
+        ->set('newLogTitle', 'Evaluator Log')
+        ->call('addLog')
+        ->assertForbidden();
+
+    Livewire::test(CourseHub::class, ['course' => $course])
+        ->set('finalGrade', 'A')
+        ->call('saveGrading')
+        ->assertForbidden();
 });

@@ -28,16 +28,44 @@ class UserPolicy
     public function update(User $user, User $target): bool
     {
         return $this->sameHousehold($user, $target)
+            && $user->isNot($target)
             && $this->viewAny($user)
             && (! $target->hasRole(UserRole::Owner) || $user->hasRole(UserRole::Owner));
     }
 
     public function delete(User $user, User $target): bool
     {
+        return false;
+    }
+
+    public function resetPassword(User $user, User $target): bool
+    {
+        return $this->sameHousehold($user, $target)
+            && $user->isNot($target)
+            && $this->viewAny($user);
+    }
+
+    public function disable(User $user, User $target): bool
+    {
         return $this->sameHousehold($user, $target)
             && $user->isNot($target)
             && $this->viewAny($user)
-            && (! $target->hasRole(UserRole::Owner) || $user->hasRole(UserRole::Owner));
+            && ! $target->hasRole(UserRole::Owner)
+            && ! $target->isDisabled();
+    }
+
+    public function enable(User $user, User $target): bool
+    {
+        return $this->sameHousehold($user, $target)
+            && $user->isNot($target)
+            && $this->viewAny($user)
+            && $target->isDisabled();
+    }
+
+    public function managePermissions(User $user, User $target): bool
+    {
+        return $this->update($user, $target)
+            && $user->hasPermission(Permission::ManagePermissions);
     }
 
     private function sameHousehold(User $user, User $target): bool
