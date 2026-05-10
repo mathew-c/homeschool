@@ -1,0 +1,819 @@
+@import 'tailwindcss';
+@import '../../vendor/tallstackui/tallstackui/css/v4.css';
+
+@source '../views';
+@source '../../vendor/tallstackui/tallstackui/**/*.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@plugin '@tailwindcss/forms';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-primary-50: #f4faf7;
+    --color-primary-100: #e7f3ed;
+    --color-primary-200: #cfe8db;
+    --color-primary-300: #a8d5bf;
+    --color-primary-400: #78b894;
+    --color-primary-500: #4f9872;
+    --color-primary-600: #34795a;
+    --color-primary-700: #286148;
+    --color-primary-800: #214e3c;
+    --color-primary-900: #1b3f31;
+    --color-primary-950: #10271f;
+
+    --color-paper: #eef4ef;
+    --color-paper-soft: #f6f8f6;
+    --color-ink: #13221c;
+    --color-muted-ink: #687586;
+}
+
+@layer base {
+    html {
+        background: #eef4ef;
+    }
+
+    body {
+        @apply bg-paper text-ink antialiased;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit;
+    }
+}
+
+@layer components {
+    .app-shell {
+        @apply min-h-screen bg-paper;
+    }
+
+    .desktop-rail {
+        @apply fixed inset-y-0 left-0 z-40 hidden w-14 flex-col items-center border-r border-primary-900/40 bg-primary-950 text-primary-100 md:flex;
+    }
+
+    .desktop-rail .brand-mark {
+        @apply mt-4;
+    }
+
+    .brand-mark {
+        @apply inline-flex items-center gap-3 text-ink no-underline;
+    }
+
+    .brand-mark span {
+        @apply grid h-9 w-9 place-items-center rounded-lg bg-primary-700 text-sm font-black text-white shadow-sm;
+    }
+
+    .brand-mark strong {
+        @apply text-base font-black;
+    }
+
+    .brand-mark small {
+        @apply rounded-full border border-primary-900/10 bg-white px-2 py-0.5 text-xs font-bold text-primary-800 shadow-sm;
+    }
+
+    .rail-nav {
+        @apply mt-10 grid gap-2;
+    }
+
+    .rail-bottom {
+        @apply mt-auto mb-4 grid justify-items-center gap-3;
+    }
+
+    .rail-link {
+        @apply grid h-10 w-10 place-items-center rounded-lg text-primary-200/75 transition hover:bg-primary-800 hover:text-white;
+    }
+
+    .rail-link.active {
+        @apply bg-primary-700 text-white shadow-sm shadow-primary-950/40;
+    }
+
+    .rail-link svg {
+        @apply h-5 w-5 fill-current;
+    }
+
+    .rail-avatar {
+        @apply grid h-8 w-8 place-items-center rounded-full bg-indigo-500 text-xs font-black text-white;
+    }
+
+    .rail-user-card {
+        @apply grid justify-items-center gap-1 text-primary-100/75 no-underline transition hover:text-white;
+    }
+
+    .rail-user-card span {
+        @apply max-w-12 truncate text-[0.625rem] font-black;
+    }
+
+    .mobile-top-nav {
+        @apply sticky top-0 z-40 grid min-h-16 grid-cols-[1fr_auto] items-center gap-3 border-b border-primary-950/10 bg-paper-soft/95 px-4 py-3 backdrop-blur md:hidden;
+    }
+
+    .mobile-menu-button {
+        @apply flex h-10 w-10 flex-col items-center justify-center gap-1 rounded-lg border border-primary-900/10 bg-white shadow-sm;
+    }
+
+    .mobile-menu-button span {
+        @apply block h-0.5 w-4 rounded-full bg-primary-900;
+    }
+
+    .mobile-menu-panel {
+        @apply col-span-2 hidden flex-col gap-1 border-t border-primary-950/10 pt-3;
+    }
+
+    .mobile-menu-panel.is-open {
+        @apply flex;
+    }
+
+    .mobile-user-strip {
+        @apply mb-2 grid gap-1 rounded-xl border border-primary-950/10 bg-white px-3 py-3 shadow-sm;
+    }
+
+    .mobile-user-strip strong {
+        @apply text-sm font-black text-ink;
+    }
+
+    .mobile-user-strip span {
+        @apply text-xs font-bold text-primary-700;
+    }
+
+    .mobile-menu-panel a,
+    .mobile-logout button {
+        @apply rounded-lg px-3 py-2 text-sm font-bold text-muted-ink no-underline transition hover:bg-white hover:text-ink;
+    }
+
+    .mobile-menu-panel a.active {
+        @apply bg-white text-primary-800 shadow-sm;
+    }
+
+    .mobile-logout button {
+        @apply w-full text-left;
+    }
+
+    .app-main {
+        @apply min-h-screen md:ml-14;
+    }
+
+    .northstar-page {
+        @apply mx-auto w-full max-w-none space-y-10 px-5 py-8 sm:px-8 lg:px-12 lg:py-10;
+    }
+
+    .page-heading,
+    .detail-hero {
+        @apply grid gap-6;
+    }
+
+    .page-heading {
+        @apply lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end;
+    }
+
+    .course-hero {
+        @apply lg:grid-cols-[minmax(0,48rem)_minmax(22rem,34rem)] lg:items-end;
+    }
+
+    .page-heading h1,
+    .detail-hero h1 {
+        @apply mt-2 text-3xl font-black leading-tight text-ink md:text-4xl;
+    }
+
+    .page-heading p,
+    .detail-hero p {
+        @apply mt-3 max-w-3xl text-base leading-7 text-muted-ink;
+    }
+
+    .section-kicker {
+        @apply text-xs font-black uppercase tracking-normal text-primary-700;
+    }
+
+    .eyebrow {
+        @apply text-xs font-black uppercase tracking-normal text-primary-700;
+    }
+
+    .surface-panel,
+    .stats-grid article,
+    .hub-stats article {
+        @apply rounded-lg border border-primary-950/10 bg-white shadow-sm shadow-slate-200/60;
+    }
+
+    .surface-panel {
+        @apply p-5 md:p-6;
+    }
+
+    .student-switcher,
+    .northstar-page label {
+        @apply grid gap-2 text-sm font-bold text-ink;
+    }
+
+    .northstar-page input,
+    .northstar-page select,
+    .northstar-page textarea {
+        @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-ink shadow-sm outline-none transition placeholder:text-slate-400 focus:border-primary-600 focus:ring-3 focus:ring-primary-100;
+    }
+
+    .northstar-page textarea {
+        @apply leading-6;
+    }
+
+    .stats-grid {
+        @apply grid gap-4 sm:grid-cols-2 xl:grid-cols-4;
+    }
+
+    .stats-grid article {
+        @apply p-5;
+    }
+
+    .stats-grid span,
+    .hub-stats span {
+        @apply block text-[0.7rem] font-black uppercase tracking-normal text-slate-500;
+    }
+
+    .stats-grid strong,
+    .hub-stats strong {
+        @apply mt-2 block text-3xl font-black text-ink;
+    }
+
+    .stats-grid p {
+        @apply mt-1 text-sm text-muted-ink;
+    }
+
+    .planning-grid,
+    .detail-grid,
+    .hub-grid {
+        @apply grid gap-6 xl:grid-cols-2;
+    }
+
+    .hub-grid.three {
+        @apply 2xl:grid-cols-3;
+    }
+
+    .bottom-grid {
+        @apply items-start;
+    }
+
+    .panel-title {
+        @apply mb-5 grid gap-1;
+    }
+
+    .panel-title span {
+        @apply text-lg font-black text-ink;
+    }
+
+    .panel-title small {
+        @apply text-sm font-medium text-muted-ink;
+    }
+
+    .field-grid {
+        @apply grid gap-4;
+    }
+
+    .field-grid.two {
+        @apply md:grid-cols-2;
+    }
+
+    .field-grid.three {
+        @apply md:grid-cols-3;
+    }
+
+    .field-grid.compact {
+        @apply my-3;
+    }
+
+    .error-text {
+        @apply text-sm font-semibold text-red-600;
+    }
+
+    .primary-action,
+    .secondary-action {
+        @apply inline-flex min-h-10 items-center justify-center rounded-lg px-4 py-2 text-sm font-black transition disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .primary-action {
+        @apply bg-primary-700 text-white shadow-sm hover:bg-primary-800;
+    }
+
+    .secondary-action {
+        @apply border border-primary-950/10 bg-white text-ink hover:border-primary-300 hover:text-primary-800;
+    }
+
+    .board {
+        @apply grid auto-cols-[minmax(18rem,86vw)] grid-flow-col gap-5 overflow-x-auto pb-3 xl:auto-cols-auto xl:grid-flow-row xl:grid-cols-3 xl:overflow-visible;
+    }
+
+    .board-column {
+        @apply min-h-[32rem] rounded-lg border border-primary-950/10 bg-white/75 p-4 shadow-sm shadow-slate-200/50;
+    }
+
+    .board-column header {
+        @apply mb-3 flex items-start justify-between gap-3;
+    }
+
+    .board-column h2 {
+        @apply text-lg font-black text-ink;
+    }
+
+    .board-column p {
+        @apply mt-1 text-sm leading-5 text-muted-ink;
+    }
+
+    .board-column header span {
+        @apply rounded-full bg-primary-100 px-3 py-1 text-sm font-black text-primary-800;
+    }
+
+    .column-slate,
+    .column-amber,
+    .column-sky,
+    .column-emerald {
+        @apply border-primary-950/10;
+    }
+
+    .card-stack {
+        @apply grid min-h-44 content-start gap-3.5;
+    }
+
+    .assignment-card {
+        @apply relative grid cursor-grab gap-3 rounded-lg border border-primary-950/10 bg-white p-4 shadow-sm shadow-slate-200/60 outline-none transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md focus:border-primary-500 focus:ring-3 focus:ring-primary-100 active:cursor-grabbing;
+    }
+
+    .kanban-chosen {
+        @apply scale-[1.015] border-primary-300 shadow-lg shadow-slate-300/60 ring-2 ring-primary-100;
+    }
+
+    .kanban-drag {
+        @apply rotate-1 opacity-95 shadow-xl shadow-slate-300/60;
+    }
+
+    .kanban-ghost {
+        @apply border-dashed border-primary-300 bg-primary-50/70 opacity-70;
+    }
+
+    body.sorting .assignment-card {
+        @apply transition-transform duration-200 ease-out;
+    }
+
+    .assignment-top {
+        @apply flex items-start gap-3;
+    }
+
+    .drag-handle {
+        @apply mt-1 flex h-7 w-7 shrink-0 cursor-grab items-center justify-center rounded-md border border-slate-200 bg-paper-soft font-black text-slate-400 transition hover:border-primary-300 hover:text-primary-700 active:cursor-grabbing;
+    }
+
+    .course-label {
+        @apply text-xs font-black uppercase tracking-normal text-primary-700;
+    }
+
+    .assignment-card h3 {
+        @apply text-base font-black leading-snug text-ink;
+    }
+
+    .assignment-title-link {
+        @apply no-underline transition hover:text-primary-700;
+    }
+
+    .assignment-title-link:hover h3 {
+        @apply text-primary-700;
+    }
+
+    .assignment-description {
+        @apply text-sm leading-6 text-muted-ink;
+    }
+
+    .assignment-meta {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .assignment-meta span {
+        @apply rounded-full border border-primary-950/10 px-2 py-1 text-xs font-bold text-muted-ink;
+    }
+
+    .assignment-card footer {
+        @apply flex flex-wrap gap-2 border-t border-primary-950/10 pt-3;
+    }
+
+    .assignment-card footer button,
+    .card-action-link {
+        @apply rounded-md border border-slate-300 px-2.5 py-1.5 text-xs font-black text-slate-700 no-underline transition hover:border-primary-500 hover:text-primary-700;
+    }
+
+    .assignment-card footer .danger-link {
+        @apply border-red-200 text-red-700 hover:border-red-500 hover:text-red-800;
+    }
+
+    .empty-column,
+    .empty-note,
+    .empty-state {
+        @apply rounded-lg border border-dashed border-slate-300 bg-paper-soft p-6 text-center text-sm font-semibold text-slate-500;
+    }
+
+    .empty-state {
+        @apply grid gap-1;
+    }
+
+    .empty-state strong {
+        @apply text-base font-black text-ink;
+    }
+
+    .empty-state span {
+        @apply font-medium text-muted-ink;
+    }
+
+    .course-list,
+    .credit-list,
+    .linked-list {
+        @apply grid gap-3;
+    }
+
+    .course-list article {
+        @apply flex items-start justify-between gap-4 border-b border-primary-950/10 pb-3 last:border-b-0;
+    }
+
+    .course-list a {
+        @apply text-ink no-underline hover:text-primary-700;
+    }
+
+    .course-list strong,
+    .credit-row strong {
+        @apply block text-sm font-black;
+    }
+
+    .course-list span,
+    .course-list em,
+    .credit-row span {
+        @apply text-sm not-italic text-muted-ink;
+    }
+
+    .credit-row {
+        @apply grid gap-2;
+    }
+
+    .credit-row > div:first-child {
+        @apply flex items-center justify-between gap-3;
+    }
+
+    .credit-bar {
+        @apply h-2 overflow-hidden rounded-full bg-slate-200;
+    }
+
+    .credit-bar span {
+        @apply block h-full rounded-full bg-primary-600;
+    }
+
+    .table-surface {
+        @apply overflow-hidden rounded-lg border border-primary-950/10 bg-white shadow-sm shadow-slate-200/60;
+    }
+
+    .table-toolbar {
+        @apply flex flex-wrap items-center gap-3 border-b border-primary-950/10 px-4 py-3 text-sm font-bold text-muted-ink;
+    }
+
+    .view-pill {
+        @apply rounded-full bg-primary-50 px-3 py-1.5 text-primary-800;
+    }
+
+    .data-table-wrap {
+        @apply overflow-x-auto;
+    }
+
+    .course-card-list {
+        @apply hidden;
+    }
+
+    .data-table {
+        @apply w-full min-w-[980px] border-collapse text-left text-sm;
+    }
+
+    .data-table th {
+        @apply border-b border-primary-950/10 bg-paper-soft px-4 py-3 font-black text-muted-ink;
+    }
+
+    .data-table td {
+        @apply border-b border-primary-950/10 px-4 py-3 font-semibold text-slate-700;
+    }
+
+    .table-title-link {
+        @apply font-black text-ink no-underline hover:text-primary-700;
+    }
+
+    .status-chip {
+        @apply inline-flex rounded-md px-2 py-1 text-xs font-black;
+    }
+
+    .status-chip.neutral {
+        @apply bg-slate-100 text-slate-700;
+    }
+
+    .status-chip.blue {
+        @apply bg-sky-100 text-sky-800;
+    }
+
+    .status-chip.green {
+        @apply bg-primary-100 text-primary-800;
+    }
+
+    .course-list-card {
+        @apply grid gap-4 border-b border-primary-950/10 p-4 text-ink no-underline transition last:border-b-0 hover:bg-primary-50;
+    }
+
+    .course-list-card strong {
+        @apply block text-base font-black;
+    }
+
+    .course-list-card span:not(.status-chip) {
+        @apply mt-1 block text-sm font-semibold text-muted-ink;
+    }
+
+    .course-list-card dl {
+        @apply grid grid-cols-3 gap-2;
+    }
+
+    .course-list-card dt {
+        @apply text-[0.65rem] font-black uppercase text-slate-400;
+    }
+
+    .course-list-card dd {
+        @apply mt-1 text-sm font-black text-slate-700;
+    }
+
+    .page-backline {
+        @apply flex flex-wrap items-center gap-2 text-sm font-bold text-muted-ink;
+    }
+
+    .page-backline a {
+        @apply text-primary-700 no-underline hover:text-primary-900;
+    }
+
+    .hero-actions {
+        @apply flex flex-wrap justify-start gap-3 lg:justify-end;
+    }
+
+    .hub-stats {
+        @apply grid grid-cols-2 gap-3;
+    }
+
+    .hub-stats article {
+        @apply min-w-0 p-4;
+    }
+
+    .detail-form {
+        @apply grid content-start gap-4;
+    }
+
+    .property-list {
+        @apply grid gap-3;
+    }
+
+    .property-list div,
+    .list-row,
+    .linked-list a {
+        @apply rounded-lg border border-primary-950/10 bg-white p-3;
+    }
+
+    .property-list span,
+    .linked-list span,
+    .list-row span {
+        @apply block text-xs font-bold uppercase tracking-normal text-muted-ink;
+    }
+
+    .property-list strong,
+    .linked-list strong,
+    .list-row strong {
+        @apply mt-1 block text-sm font-black text-ink;
+    }
+
+    .linked-list a {
+        @apply no-underline transition hover:border-primary-300;
+    }
+
+    .linked-list.compact {
+        @apply max-h-72 overflow-y-auto pr-1;
+    }
+
+    .outline-panel {
+        @apply space-y-6;
+    }
+
+    .outline-list {
+        @apply grid gap-4;
+    }
+
+    .outline-week {
+        @apply grid gap-5 rounded-lg border border-primary-950/10 bg-paper-soft p-4 md:p-5;
+    }
+
+    .outline-week-head,
+    .outline-add-head {
+        @apply grid gap-4;
+    }
+
+    .outline-week-head {
+        @apply md:grid-cols-[76px_minmax(0,1fr)_auto] md:items-end;
+    }
+
+    .outline-add-head {
+        @apply lg:grid-cols-[86px_minmax(16rem,1fr)] lg:items-end;
+    }
+
+    .outline-topic {
+        @apply min-w-0;
+    }
+
+    .outline-detail-grid {
+        @apply grid gap-4 lg:grid-cols-2 2xl:grid-cols-4;
+    }
+
+    .week-number {
+        @apply rounded-lg border border-primary-950/10 bg-white p-3 text-center shadow-sm shadow-slate-200/50;
+    }
+
+    .week-number span {
+        @apply block text-xs font-black uppercase tracking-normal text-slate-400;
+    }
+
+    .week-number strong {
+        @apply block text-2xl font-black text-ink;
+    }
+
+    .outline-add {
+        @apply grid gap-5 border-t border-primary-950/10 pt-6;
+    }
+
+    .outline-add-actions {
+        @apply flex justify-end;
+    }
+
+    .subtle-danger {
+        @apply rounded-lg border border-red-100 bg-white px-3 py-2 text-sm font-black text-red-600 transition hover:border-red-200 hover:bg-red-50;
+    }
+
+    .user-admin-actions {
+        @apply flex flex-wrap items-center gap-2;
+    }
+
+    .user-action-button {
+        @apply inline-flex min-h-9 items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-black text-slate-700 transition hover:border-primary-400 hover:text-primary-800;
+    }
+
+    .user-action-button.reset {
+        @apply border-primary-200 bg-primary-50 text-primary-800 hover:border-primary-400 hover:bg-primary-100;
+    }
+
+    .student-card-grid {
+        @apply grid gap-5 sm:grid-cols-2 xl:grid-cols-3;
+    }
+
+    .student-profile-card {
+        @apply overflow-hidden rounded-xl border border-primary-950/10 bg-white text-left shadow-sm shadow-slate-200/60 outline-none transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md;
+    }
+
+    .student-card-photo {
+        @apply relative grid aspect-[4/3] place-items-center bg-primary-100 text-primary-800;
+    }
+
+    .student-card-photo img {
+        @apply h-full w-full object-cover;
+    }
+
+    .student-card-photo > span {
+        @apply grid h-20 w-20 place-items-center rounded-full bg-white/85 text-3xl font-black shadow-sm;
+    }
+
+    .student-drag-handle {
+        @apply absolute left-3 top-3 grid h-9 w-9 cursor-grab place-items-center rounded-lg border border-white/70 bg-white/90 text-sm font-black text-muted-ink shadow-sm transition hover:border-primary-300 hover:text-primary-700 active:cursor-grabbing;
+    }
+
+    .student-card-body {
+        @apply grid gap-4 p-5;
+    }
+
+    .student-card-kicker {
+        @apply text-xs font-black uppercase tracking-normal text-primary-700;
+    }
+
+    .student-card-body h2 {
+        @apply mt-1 text-2xl font-black text-ink;
+    }
+
+    .student-card-meta {
+        @apply flex flex-wrap gap-2 text-xs font-bold text-muted-ink;
+    }
+
+    .student-card-meta span {
+        @apply rounded-full bg-paper px-2.5 py-1;
+    }
+
+    .student-card-copy {
+        @apply text-sm leading-6 text-slate-700;
+    }
+
+    .student-card-copy.muted {
+        @apply text-muted-ink;
+    }
+
+    .student-chip-row {
+        @apply flex flex-wrap gap-2;
+    }
+
+    .student-chip-row span {
+        @apply rounded-full border border-primary-200 bg-primary-50 px-2.5 py-1 text-xs font-bold text-primary-800;
+    }
+
+    .student-card-footer {
+        @apply flex flex-wrap items-center justify-between gap-2 border-t border-primary-950/10 pt-4 text-xs font-bold text-muted-ink;
+    }
+
+    .student-card-footer button {
+        @apply rounded-lg bg-primary-700 px-3 py-1.5 text-xs font-black text-white transition hover:bg-primary-800;
+    }
+
+    .student-card-chosen {
+        @apply scale-[1.01] border-primary-400 shadow-lg shadow-slate-300/60 ring-2 ring-primary-100;
+    }
+
+    .student-card-drag {
+        @apply rotate-1 opacity-95 shadow-xl shadow-slate-300/60;
+    }
+
+    .student-card-ghost {
+        @apply border-dashed border-primary-300 bg-primary-50 opacity-70;
+    }
+
+    .student-empty-state {
+        @apply grid min-h-72 place-items-center gap-2 rounded-xl border border-dashed border-primary-300 bg-white p-10 text-center text-ink shadow-sm;
+    }
+
+    .student-empty-state span {
+        @apply grid h-12 w-12 place-items-center rounded-full bg-primary-700 text-2xl font-black text-white;
+    }
+
+    .student-empty-state strong {
+        @apply text-lg font-black;
+    }
+
+    .student-empty-state small {
+        @apply text-sm font-semibold text-muted-ink;
+    }
+
+    .student-profile-form {
+        @apply grid gap-5;
+    }
+
+    .student-form-section {
+        @apply grid gap-4 rounded-xl border border-slate-200 bg-white p-4;
+    }
+
+    .student-form-section h3 {
+        @apply text-base font-black text-ink;
+    }
+
+    .student-form-grid {
+        @apply grid gap-4 md:grid-cols-2;
+    }
+
+    .student-profile-form label {
+        @apply grid gap-1.5 text-sm font-bold text-slate-700;
+    }
+
+    .student-profile-form input,
+    .student-profile-form textarea {
+        @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-primary-600 focus:ring-3 focus:ring-primary-100;
+    }
+
+    .student-profile-form textarea {
+        @apply resize-y leading-6;
+    }
+
+    .student-profile-form small {
+        @apply text-xs font-bold text-red-600;
+    }
+
+    .field-span-2 {
+        @apply md:col-span-2;
+    }
+}
+
+@media (max-width: 767px) {
+    @layer components {
+        .northstar-page {
+            @apply space-y-8 px-4 py-7;
+        }
+
+        .data-table-wrap {
+            @apply hidden;
+        }
+
+        .course-card-list {
+            @apply grid;
+        }
+
+        .outline-add-actions .primary-action {
+            @apply w-full justify-center;
+        }
+
+        .student-card-grid {
+            @apply grid-cols-1;
+        }
+    }
+}
