@@ -31,7 +31,7 @@
   display: grid;
   place-items: center;
   color: #ffffff;
-  background: var(--green);
+  background: var(--slate-blue);
   flex: 0 0 auto;
 }
 
@@ -93,8 +93,8 @@
 .nav-item:hover,
 .nav-item.active {
   color: var(--ink);
-  background: var(--green-soft);
-  border-color: var(--green-border);
+  background: var(--skywash);
+  border-color: var(--slate-blue-border);
 }
 
 .sidebar-label {
@@ -173,7 +173,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  border-left: 5px solid var(--green);
+  border-left: 5px solid var(--slate-blue);
 }
 
 .compact-band {
@@ -215,12 +215,12 @@
 
 .primary-button {
   color: #ffffff;
-  background: var(--green);
-  border-color: var(--green);
+  background: var(--slate-blue);
+  border-color: var(--slate-blue);
 }
 
 .primary-button:hover {
-  background: #265a43;
+  background: #4d6d87;
 }
 
 .secondary-button {
@@ -238,7 +238,7 @@
 .ghost-button:hover,
 .icon-button:hover,
 .segmented button:hover {
-  border-color: var(--green-border);
+  border-color: var(--slate-blue-border);
   color: var(--ink);
 }
 
@@ -307,7 +307,7 @@
   align-items: center;
   gap: 9px;
   margin-bottom: 14px;
-  color: var(--green);
+  color: var(--slate-blue);
 }
 
 .panel-heading h3 {
@@ -367,8 +367,8 @@
 }
 
 .flag-row.good {
-  border-color: var(--green-border);
-  background: var(--green-soft);
+  border-color: var(--slate-blue-border);
+  background: var(--skywash);
 }
 
 .session-row {
@@ -410,7 +410,7 @@
 }
 
 .source-link:hover {
-  border-color: var(--green-border);
+  border-color: var(--slate-blue-border);
 }
 
 .source-link strong {
@@ -489,7 +489,7 @@ a:focus-visible {
 }
 
 .question-item em {
-  color: var(--teal);
+  color: var(--orange);
   font-size: 12px;
   font-style: normal;
   text-transform: uppercase;
@@ -521,7 +521,7 @@ a:focus-visible {
 
 .inline-title-input:focus {
   padding: 0 8px;
-  border-color: var(--green-border);
+  border-color: var(--slate-blue-border);
   background: #ffffff;
 }
 
@@ -531,14 +531,14 @@ a:focus-visible {
   height: 10px;
   overflow: hidden;
   border-radius: 999px;
-  background: #e8ece6;
+  background: #e4eef5;
 }
 
 .progress-track span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: var(--teal);
+  background: var(--orange);
 }
 
 .module-row {
@@ -587,8 +587,8 @@ a:focus-visible {
 
 .segmented button.active {
   color: #ffffff;
-  background: var(--teal);
-  border-color: var(--teal);
+  background: var(--orange);
+  border-color: var(--orange);
 }
 
 .credit-row {
@@ -630,7 +630,7 @@ a:focus-visible {
 }
 
 .credit-bars .completed {
-  background: var(--green);
+  background: var(--slate-blue);
 }
 
 .table-wrap {
@@ -672,9 +672,9 @@ td {
 }
 
 .check-row.done {
-  color: var(--green);
-  background: var(--green-soft);
-  border-color: var(--green-border);
+  color: var(--slate-blue);
+  background: var(--skywash);
+  border-color: var(--slate-blue-border);
 }
 
 .evidence-row {

@@ -84,14 +84,14 @@ it('does not update password when null', function () {
     expect($this->user->fresh()->password)->toBe($originalPassword);
 });
 
-it('dispatches success alert after saving', function () {
+it('dispatches completion alert after saving', function () {
     Livewire::test(Profile::class)
         ->set('user.name', 'Updated Again')
         ->call('save')
         ->assertDispatched('updated')
         ->assertDispatched('ts-ui:dialog', function (string $event, array $params) {
             return $event === 'ts-ui:dialog' &&
-                $params['type'] === 'success' &&
+                $params['type'] === 'info' &&
                 $params['title'] === 'Done!' &&
                 $params['description'] === 'Task completed successfully.';
         });

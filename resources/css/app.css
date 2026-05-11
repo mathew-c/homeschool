@@ -12,27 +12,40 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-    --color-primary-50: #f4faf7;
-    --color-primary-100: #e7f3ed;
-    --color-primary-200: #cfe8db;
-    --color-primary-300: #a8d5bf;
-    --color-primary-400: #78b894;
-    --color-primary-500: #4f9872;
-    --color-primary-600: #34795a;
-    --color-primary-700: #286148;
-    --color-primary-800: #214e3c;
-    --color-primary-900: #1b3f31;
-    --color-primary-950: #10271f;
+    --color-primary-50: #f3f8fb;
+    --color-primary-100: #e4eef5;
+    --color-primary-200: #c9ddeb;
+    --color-primary-300: #a6c5d8;
+    --color-primary-400: #7fa7c0;
+    --color-primary-500: #5b7c99;
+    --color-primary-600: #4d6d87;
+    --color-primary-700: #405a72;
+    --color-primary-800: #354a5e;
+    --color-primary-900: #2b3c4c;
+    --color-primary-950: #172332;
 
-    --color-paper: #eef4ef;
-    --color-paper-soft: #f6f8f6;
-    --color-ink: #13221c;
+    --color-accent-50: #fff6ed;
+    --color-accent-100: #ffead8;
+    --color-accent-200: #ffd2ad;
+    --color-accent-300: #ffb375;
+    --color-accent-400: #ff984d;
+    --color-accent-500: #ff8c42;
+    --color-accent-600: #ea6d1f;
+    --color-accent-700: #bf5218;
+    --color-accent-800: #98431a;
+    --color-accent-900: #7a3919;
+    --color-accent-950: #421907;
+
+    --color-skywash: #cfe8ef;
+    --color-paper: #eef6f8;
+    --color-paper-soft: #f8fbfc;
+    --color-ink: #182535;
     --color-muted-ink: #687586;
 }
 
 @layer base {
     html {
-        background: #eef4ef;
+        background: #eef6f8;
     }
 
     body {
@@ -89,7 +102,7 @@
     }
 
     .rail-link.active {
-        @apply bg-primary-700 text-white shadow-sm shadow-primary-950/40;
+        @apply bg-accent-500 text-primary-950 shadow-sm shadow-primary-950/30;
     }
 
     .rail-link svg {
@@ -97,7 +110,7 @@
     }
 
     .rail-avatar {
-        @apply grid h-8 w-8 place-items-center rounded-full bg-indigo-500 text-xs font-black text-white;
+        @apply grid h-8 w-8 place-items-center rounded-full bg-accent-500 text-xs font-black text-primary-950;
     }
 
     .rail-user-card {
@@ -185,11 +198,11 @@
     }
 
     .section-kicker {
-        @apply text-xs font-black uppercase tracking-normal text-primary-700;
+        @apply text-xs font-black uppercase tracking-normal text-accent-700;
     }
 
     .eyebrow {
-        @apply text-xs font-black uppercase tracking-normal text-primary-700;
+        @apply text-xs font-black uppercase tracking-normal text-accent-700;
     }
 
     .surface-panel,
@@ -322,11 +335,16 @@
         @apply rounded-full bg-primary-100 px-3 py-1 text-sm font-black text-primary-800;
     }
 
-    .column-slate,
-    .column-amber,
-    .column-sky,
-    .column-emerald {
-        @apply border-primary-950/10;
+    .column-slate {
+        @apply border-primary-200 bg-white;
+    }
+
+    .column-sky {
+        @apply border-primary-200 bg-skywash/35;
+    }
+
+    .column-orange {
+        @apply border-accent-200 bg-accent-50/70;
     }
 
     .card-stack {
@@ -506,15 +524,16 @@
     }
 
     .status-chip.blue {
-        @apply bg-sky-100 text-sky-800;
+        @apply bg-skywash text-primary-800;
     }
 
-    .status-chip.green {
+    .status-chip.slate {
         @apply bg-primary-100 text-primary-800;
     }
 
+    .status-chip.orange,
     .status-chip.amber {
-        @apply bg-amber-100 text-amber-800;
+        @apply bg-accent-100 text-accent-800;
     }
 
     .status-chip.red {

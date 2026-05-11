@@ -57,7 +57,7 @@ class HomeschoolBoard extends Component
         Assignment::STATUS_DONE => [
             'label' => 'Done',
             'help' => 'Evidence or reflection makes it count.',
-            'tone' => 'emerald',
+            'tone' => 'orange',
         ],
     ];
 

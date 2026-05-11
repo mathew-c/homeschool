@@ -22,7 +22,7 @@
             @interact('column_role', $row)
             <span class="status-chip neutral">{{ $row->role?->label() ?? 'Unassigned' }}</span>
             @if ($row->id === auth()->id())
-                <span class="status-chip green">You</span>
+                <span class="status-chip orange">You</span>
             @endif
             @endinteract
 
@@ -54,7 +54,7 @@
             @if ($row->isDisabled())
                 <span class="status-chip red">Disabled</span>
             @else
-                <span class="status-chip green">Active</span>
+                <span class="status-chip blue">Active</span>
             @endif
             @endinteract
 

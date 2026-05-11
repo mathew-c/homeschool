@@ -159,7 +159,7 @@ it('stores permission removals as explicit overrides', function () {
         ->and($updated->hasPermission(Permission::MoveAssignments))->toBeFalse();
 });
 
-it('closes the edit modal and shows success after saving custom permissions', function () {
+it('closes the edit modal and shows completion feedback after saving custom permissions', function () {
     $selected = array_values(array_diff($this->original->permissionValues(), [Permission::ManageStudents->value]));
 
     Livewire::test(Update::class)
@@ -171,7 +171,7 @@ it('closes the edit modal and shows success after saving custom permissions', fu
         ->assertDispatched('updated')
         ->assertDispatched('ts-ui:dialog', function (string $event, array $params) {
             return $event === 'ts-ui:dialog' &&
-                $params['type'] === 'success' &&
+                $params['type'] === 'info' &&
                 $params['title'] === 'Done!' &&
                 $params['description'] === 'Task completed successfully.';
         });

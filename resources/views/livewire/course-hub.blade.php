@@ -33,7 +33,7 @@
     </section>
 
     @if ($notice)
-        <x-alert color="green" icon="check-circle" class="mb-4">
+        <x-alert color="primary" icon="check-circle" class="mb-4">
             {{ $notice }}
         </x-alert>
     @endif

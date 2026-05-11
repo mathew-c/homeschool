@@ -12,7 +12,7 @@ trait Alert
     public function success(string $description = 'Task completed successfully.', string $title = 'Done!'): void
     {
         $this->dialog()
-            ->success(__($title), __($description))
+            ->info(__($title), __($description))
             ->send();
     }
 

@@ -64,7 +64,7 @@
                             <td>{{ $course->resource_links_count }}</td>
                             <td>{{ $course->school_year ?? '-' }}</td>
                             <td><span class="status-chip blue">{{ str($course->status)->headline() }}</span></td>
-                            <td><span class="status-chip green">{{ $course->subject }}</span></td>
+                            <td><span class="status-chip slate">{{ $course->subject }}</span></td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -94,7 +94,7 @@
                         </div>
                     </dl>
 
-                    <span class="status-chip green">{{ str($course->status)->headline() }}</span>
+                    <span class="status-chip blue">{{ str($course->status)->headline() }}</span>
                 </a>
             @endforeach
         </div>
