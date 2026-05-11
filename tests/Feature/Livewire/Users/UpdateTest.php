@@ -42,6 +42,14 @@ it('initializes with existing user data', function () {
         ->assertSet('password_confirmation', null);
 });
 
+it('renders existing default permissions as checked', function () {
+    $html = Livewire::test(Update::class, ['user' => $this->original])->html();
+
+    expect($html)
+        ->toMatch('/value="'.Permission::ManageStudents->value.'"[^>]*checked/')
+        ->toMatch('/value="'.Permission::ManageCourses->value.'"[^>]*checked/');
+});
+
 it('load the correct use', function () {
     Livewire::test(Update::class)
         ->call('load', $this->original)

@@ -71,13 +71,16 @@
                     </div>
 
                     <div class="permission-grid">
-                        @foreach ($this->permissionGroups as $group => $permissions)
+                        @foreach ($this->permissionGroups as $group => $groupPermissions)
                             <fieldset class="permission-group">
                                 <legend>{{ $group }}</legend>
 
-                                @foreach ($permissions as $permission)
+                                @foreach ($groupPermissions as $permission)
                                     <label class="permission-option">
-                                        <input type="checkbox" wire:model="permissions" value="{{ $permission['value'] }}">
+                                        <input type="checkbox"
+                                               wire:model.live="permissions"
+                                               value="{{ $permission['value'] }}"
+                                               @checked(in_array($permission['value'], $permissions, true))>
                                         <span>
                                             {{ $permission['label'] }}
                                             @if ($permission['default'])

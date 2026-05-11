@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Users\Create;
+use App\Enums\Permission;
 use App\Enums\UserRole;
 use App\Models\Student;
 use App\Models\StudentAccessGrant;
@@ -32,6 +33,14 @@ it('initializes with a new user', function () {
         ->assertSet('role', UserRole::Parent->value)
         ->assertSet('password', null)
         ->assertSet('password_confirmation', null);
+});
+
+it('renders parent default permissions as checked', function () {
+    $html = Livewire::test(Create::class)->html();
+
+    expect($html)
+        ->toMatch('/value="'.Permission::ManageStudents->value.'"[^>]*checked/')
+        ->toMatch('/value="'.Permission::ManageCourses->value.'"[^>]*checked/');
 });
 
 it('validates user creation with valid data', function () {

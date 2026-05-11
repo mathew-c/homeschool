@@ -27,9 +27,7 @@ class Index extends Component
     ];
 
     public array $headers = [
-        ['index' => 'id', 'label' => '#'],
         ['index' => 'name', 'label' => 'Name'],
-        ['index' => 'email', 'label' => 'E-mail'],
         ['index' => 'role', 'label' => 'Role'],
         ['index' => 'access', 'label' => 'Access'],
         ['index' => 'permissions', 'label' => 'Permissions'],

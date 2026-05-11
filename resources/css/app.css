@@ -712,19 +712,19 @@
         @apply px-1 text-xs font-black uppercase tracking-normal text-primary-700;
     }
 
-    .permission-option {
-        @apply flex items-start gap-2 py-1.5 text-sm font-bold text-slate-700;
+    .northstar-page .permission-option {
+        @apply flex cursor-pointer items-center gap-3 rounded-md px-2 py-1.5 text-sm font-bold text-slate-700 transition hover:bg-primary-50;
     }
 
-    .permission-option input {
-        @apply mt-1 h-4 w-4 rounded border-slate-300 text-primary-700 focus:ring-primary-200;
+    .northstar-page .permission-option input[type='checkbox'] {
+        @apply h-4 w-4 shrink-0 cursor-pointer appearance-auto rounded border-slate-300 p-0 text-primary-700 shadow-none accent-primary-700 focus:ring-2 focus:ring-primary-200;
     }
 
-    .permission-option span {
-        @apply flex flex-wrap items-center gap-2;
+    .northstar-page .permission-option span {
+        @apply min-w-0 flex flex-wrap items-center gap-2 leading-5;
     }
 
-    .permission-option em {
+    .northstar-page .permission-option em {
         @apply not-italic text-[0.65rem] font-black uppercase tracking-normal text-slate-400;
     }
 

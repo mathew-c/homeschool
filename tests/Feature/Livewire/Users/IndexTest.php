@@ -40,9 +40,7 @@ it('verifies component headers', function () {
     $component = Livewire::test(Index::class);
 
     $headers = [
-        ['index' => 'id', 'label' => '#'],
         ['index' => 'name', 'label' => 'Name'],
-        ['index' => 'email', 'label' => 'E-mail'],
         ['index' => 'role', 'label' => 'Role'],
         ['index' => 'access', 'label' => 'Access'],
         ['index' => 'permissions', 'label' => 'Permissions'],
