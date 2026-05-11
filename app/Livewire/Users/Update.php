@@ -143,6 +143,7 @@ class Update extends Component
         $this->password = null;
         $this->password_confirmation = null;
         $this->temporaryPassword = null;
+        $this->modal = false;
 
         $this->success();
     }

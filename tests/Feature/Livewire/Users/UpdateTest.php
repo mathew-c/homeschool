@@ -159,6 +159,24 @@ it('stores permission removals as explicit overrides', function () {
         ->and($updated->hasPermission(Permission::MoveAssignments))->toBeFalse();
 });
 
+it('closes the edit modal and shows success after saving custom permissions', function () {
+    $selected = array_values(array_diff($this->original->permissionValues(), [Permission::ManageStudents->value]));
+
+    Livewire::test(Update::class)
+        ->call('load', $this->original)
+        ->set('permissions', $selected)
+        ->call('save')
+        ->assertHasNoErrors()
+        ->assertSet('modal', false)
+        ->assertDispatched('updated')
+        ->assertDispatched('ts-ui:dialog', function (string $event, array $params) {
+            return $event === 'ts-ui:dialog' &&
+                $params['type'] === 'success' &&
+                $params['title'] === 'Done!' &&
+                $params['description'] === 'Task completed successfully.';
+        });
+});
+
 it('does not update password when not provided', function () {
     $old = $this->original->password;
 
